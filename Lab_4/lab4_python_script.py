@@ -1,11 +1,11 @@
 import arcpy
 
-folder_path = r'\\storage.it.tamu.edu\TAMU\OAL\Homes\neha2003\AccountSettings\Desktop\geog'
+folder_path = r'C:\Users\neha2003\Desktop\sujith-online-GEOG676-spring2026\Lab_4'
 gdb_name = 'Test.gdb'
 gdb_path = folder_path + '\\' + gdb_name
 arcpy.CreateFileGDB_management(folder_path, gdb_name)
 
-csv_path = r'\\storage.it.tamu.edu\TAMU\OAL\Homes\neha2003\AccountSettings\Desktop\geog\garages.csv'
+csv_path = r'C:\Users\neha2003\Desktop\sujith-online-GEOG676-spring2026\Lab_4\garages.csv'
 garage_layer_name = 'Garage_Points'
 garages = arcpy.MakeXYEventLayer_management(csv_path, 'X', 'Y', garage_layer_name)
 
@@ -13,7 +13,7 @@ input_layer = garages
 arcpy.FeatureClassToGeodatabase_conversion(input_layer, gdb_path)
 garage_points = gdb_path + '\\' + garage_layer_name
 
-campus = r'\\storage.it.tamu.edu\TAMU\OAL\Homes\neha2003\AccountSettings\Desktop\geog\Campus.gdb'
+campus = r'C:\Users\neha2003\Desktop\sujith-online-GEOG676-spring2026\Lab_4\Campus.gdb'
 buildings_campus = campus + '\Structures'
 buildings = gdb_path + '\\' + 'Buildings'
 
