@@ -28,42 +28,42 @@ class Tool:
         displayName="GDB Folder",
         name="GDBFolder",
         datatype="DEFolder",
-        parameterType="Required"
+        parameterType="Required",
         direction="Input"
         )
         param1 = arcpy.Parameter(
         displayName="GDB Name",
         name="GDBName",
         datatype="GPString",
-        parameterType="Required"
+        parameterType="Required",
         direction="Input"
         )
         param2 = arcpy.Parameter(
         displayName="Garage CSV File",
         name="GarageCSVFile",
         datatype="DEFile",
-        parameterType="Required"
+        parameterType="Required",
         direction="Input"
         )
         param3 = arcpy.Parameter(
         displayName="Garage Layer Name",
         name="GarageLayerName",
         datatype="GPString",
-        parameterType="Required"
+        parameterType="Required",
         direction="Input"
         )
         param4 = arcpy.Parameter(
         displayName="Campus GDB",
         name="Campus GDB",
         datatype="DEType",
-        parameterType="Required"
+        parameterType="Required",
         direction="Input"
         )
         param5 = arcpy.Parameter(
         displayName="Buffer Distance",
         name="BufferDistance",
         datatype="GPDouble",
-        parameterType="Required"
+        parameterType="Required",
         direction="Input"
         )
         params = [param0, param1, param2, param3, param4, param5]
@@ -109,7 +109,7 @@ class Tool:
         arcpy.Project_management(garage_points, gdb_path + '\Garage_Points_reprojected', spatial_ref)
 
         buffer_distance = int(parameters[5].value)
-        garageBuffered = arcpy.Buffer_analysis(gdb_path + '\Garage_Points_reprojected', spatial_ref)
+        garageBuffered = arcpy.Buffer_analysis(gdb_path + '\Garage_Points_reprojected', gdb_path + '\Garage_Points_buffered', parameters[5].valueAsText)
 
         arcpy.Intersect_analysis([garageBuffered, buildings], gdb_path + '\Garage_Buildings_Intersection', 'ALL')
 
