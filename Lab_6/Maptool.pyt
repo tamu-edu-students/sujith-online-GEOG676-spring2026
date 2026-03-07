@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import arcpy
+import time
 
 
 class Toolbox:
@@ -94,18 +95,18 @@ class GraduatedColorsRenderer:
         time.sleep(readTime)
         arcpy.AddMessage("Finding your nap layer...")
 
-        for layer in campus. listLayers():
-            if layer.isfeaturelayer:
+        for layer in campus.listLayers():
+            if layer.isFeatureLayer:
                 symbology = layer.symbology
                 if hasattr(symbology, "renderer"):
-                    if layer.name == parameters(1).valueAsText:
-                        arcpy.SetProgressorPositioo(start + step)
+                    if layer.name == parameters[1].valueAsText:
+                        arcpy.SetProgressorPosition(start + step)
                         arcpy.SetProgressorLabel("Calculating and classifying...")
                         time.sleep(readTime)
                         arcpy.AddMessage("Calculating and classifying...")
 
                         symbology.updateRenderer('GraduatedColorsRenderer')
-                        symbology.renderer.classificatichsField = "Shape_Area"
+                        symbology.renderer.classificationField = "Shape_Area"
 
                         arcpy.SetProgressorPosition(start + step*2)
                         arcpy.SetProgressorLabel("Cleaning up...")
