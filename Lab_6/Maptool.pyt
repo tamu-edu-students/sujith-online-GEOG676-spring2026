@@ -24,7 +24,38 @@ class GraduatedColorsRenderer:
 
     def getParameterInfo(self):
         """Define the tool parameters."""
-        params = None
+        param0 = arcpy.Parameter(
+            displayName="Input ArcGIS Pro Project Name",
+            name="aprxInputName",
+            datatype="DEFile",
+            parameterType="Required",
+            direction="Input"
+        )
+
+        param1 = arcpy.Parameter(
+            displayName="Layer to Classify",
+            name="LayertoClassify",
+            datatype= "GPLayer",
+            parameterType="Required",
+            direction="Input"
+        )
+
+        param2 = arcpy.Parameter(
+            displayName="Output Location",
+            name="OutputLocation",
+            datatype="DEFolder",
+            direction="Input"
+        )
+
+        param3 = arcpy.Parameter(
+            displayName="Output Project Name",
+            name="OutputProjectName",
+            datatype="GPString",
+            parameterType="Required",
+            direction="Input"
+        )
+
+        params = [param0, param1, param2, param3]
         return params
 
     def isLicensed(self):
@@ -44,7 +75,63 @@ class GraduatedColorsRenderer:
 
     def execute(self, parameters, messages):
         """The source code of the tool."""
+        readTime = 3
+        start = 0
+        max = 100
+        step = 33
+
+        arcpy.SetProgressor("step", "Validating Project File...", start, max, step)
+        time.sleep(readTime)
+
+        arcpy.AddMessage("Validating Project File...")
+
+        project = arcpy.mp.ArcGISProject(parameters[0].valueAsText)
+
+        campus = project.listMaps('Map')[0]
+
+        arcpy.SetProgressorPosition(start + step)
+        arcpy.SetProgressorLabel("Finding your map layer...")
+        time.sleep(readTime)
+        arcpy.AddMessage("Finding your nap layer...")
+
+        for layer in campus. listLayers():
+            if layer.isfeaturelayer:
+                symbology = layer.symbology
+                if hasattr(symbology, "renderer"):
+                    if layer.name == parameters(1).valueAsText:
+                        arcpy.SetProgressorPositioo(start + step)
+                        arcpy.SetProgressorLabel("Calculating and classifying...")
+                        time.sleep(readTime)
+                        arcpy.AddMessage("Calculating and classifying...")
+
+                        symbology.updateRenderer('GraduatedColorsRenderer')
+                        symbology.renderer.classificatichsField = "Shape_Area"
+
+                        arcpy.SetProgressorPosition(start + step*2)
+                        arcpy.SetProgressorLabel("Cleaning up...")
+                        time.sleep(readTime)
+                        arcpy.AddMessage("Cleaning up...")
+
+                        symbology.renderer.breakCount = 5
+
+                        symbology.renderer.colorRamp = project.listColorRamps('Oranges (5 Classes)')[0]
+
+                        layer.symbology = symbology
+
+                        arcpy.AddMessage("Finish Generating Layer...")
+                    else:
+                        print("NO layers found")
+
+        arcpy.SetProgressorPosition(start + step*3)
+        arcpy.SetProgressorLabel("Saving...")
+        time.sleep(readTime)
+        arcpy.AddMessage("Saving...")
+
+        project.saveACopy(parameters[2].valueAsText + "\\" + parameters[3].valueAsText + ".aprx")
         return
+    
+
+
 
     def postExecute(self, parameters):
         """This method takes place after outputs are processed and
