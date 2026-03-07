@@ -86,9 +86,9 @@ class GraduatedColorsRenderer:
 
         arcpy.AddMessage("Validating Project File...")
 
-        project = arcpy.mp.ArcGISProject(parameters[0].valueAsText)
+        project = arcpy.mp.ArcGISProject("CURRENT")
 
-        campus = project.listMaps('Map')[0]
+        campus = project.listMaps()[0]
 
         arcpy.SetProgressorPosition(start + step)
         arcpy.SetProgressorLabel("Finding your map layer...")
